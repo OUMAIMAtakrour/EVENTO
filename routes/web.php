@@ -36,7 +36,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::post('/events/store', [EventsController::class, 'store'])->name('events.store');
-Route::post('/events/update', [EventsController::class, 'update'])->name('events.update');
+Route::post('/events/{id}/update', [EventsController::class, 'update'])->name('events.update');
 Route::get('/index', [CategoriesController::class, 'index'])->name('index');
 Route::get('/index', [EventsController::class, 'index'])->name('index');
 Route::get('/dash', [EventsController::class, 'showDashboard'])->name('showDashboard');

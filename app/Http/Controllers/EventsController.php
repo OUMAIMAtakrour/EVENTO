@@ -17,6 +17,7 @@ class EventsController extends Controller
 
     public function index()
     {
+
         $events = Events::all();
         $categories = Categories::all();
         return view('index', compact('events', 'categories'));
@@ -104,7 +105,7 @@ class EventsController extends Controller
             'available_seats' => 'required',
         ]);
 
-        $event = Event::findOrFail($id);
+        $event = Events::findOrFail($id);
 
         $event->update([
             'event_title' => $request->event_title,
@@ -121,13 +122,7 @@ class EventsController extends Controller
 
     public function delete($id)
     {
-
-        $event = App\Models\Events::findOrFail($id);
-
-
-        $event->delete();
-
-
+        Events::destroy($id);
         return redirect()->back()->with('success', 'Event deleted successfully!');
     }
 
