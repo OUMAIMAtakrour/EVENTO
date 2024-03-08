@@ -20,6 +20,7 @@ class EventsController extends Controller
 
         $events = Events::all();
         $categories = Categories::all();
+
         return view('index', compact('events', 'categories'));
     }
 
@@ -48,6 +49,8 @@ class EventsController extends Controller
             'place' => 'required',
             'available_seats' => 'required',
             'category_id' => 'required',
+            'event_status' => 'required',
+            'events_access' => 'required',
         ]);
 
         Events::create($validatedData);
@@ -103,6 +106,7 @@ class EventsController extends Controller
             'description' => 'required',
             'place' => 'required',
             'available_seats' => 'required',
+            'category_id' => 'required',
         ]);
 
         $event = Events::findOrFail($id);
@@ -112,12 +116,26 @@ class EventsController extends Controller
             'description' => $request->description,
             'place' => $request->place,
             'available_seats' => $request->available_seats,
+            'category_id' => $request->available_seats,
         ]);
 
         return redirect()->back();
     }
 
+    public function search(Request $request)
+    {
+        $events = Events::paginate(6);
+        $searchQuery = $request->input('search');
 
+        $categories = Categories::all();
+
+        if ($searchQuery) {
+            $eventSearchResults = Events::where('event_title', 'like', '%' . $searchQuery . '%')->paginate(6);
+        } else {
+            $eventSearchResults = $events;
+        }
+        return view('index', compact('eventSearchResults', 'events', "categories"));
+    }
 
 
     public function delete($id)

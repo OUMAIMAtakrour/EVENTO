@@ -46,6 +46,7 @@ Route::get('/events', [CategoriesController::class, 'showCategories'])->name('sh
 // Route::get('/index/filter/{category_id}', 'EventsController@filterEvents')->name('filterEvents');
 // Route::get('/categories', 'Event\EventsController@showCategories')->name('categories');
 Route::get('/filterEvents', [EventsController::class, 'filterEvents'])->name('filterEvents');
+Route::get('searchname', [\App\Http\Controllers\EventsController::class, 'search'])->name('searchname');
 
 Route::delete('/events/{id}', [EventsController::class, 'delete'])->name('events.delete');
 

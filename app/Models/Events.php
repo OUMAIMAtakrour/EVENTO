@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Events extends Model
 {
     use HasFactory;
-    protected $fillable = ["id", "event_title", "description", "place", "available_seats", "category_id"];
+    protected $fillable = ["id", "event_title", "description", "place", "available_seats", "category_id", "event_status", "events_access"];
     public function categories()
     {
         return $this->belongsTo(Categories::class);

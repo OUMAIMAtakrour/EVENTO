@@ -30,24 +30,41 @@
         </div>
 
         <div class="input-group mb-3">
-            <label for="inputGroupSelect01" class="input-group-text">OPTIONS</label>
+            <label for="inputGroupSelect01" class="input-group-text" >OPTIONS</label>
             <select name="category_id" id="inputGroupSelect01" class="form-control">
-                <option selected>Choose...</option>
+
 
                 @foreach ($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
 
             </select>
-        </div>
 
-        <!-- <div class="mb-3">
+            <div class="input-group mb-3">
+                <label for="inputGroupSelect01" class="input-group-text">Event access</label>
+                <select name="events_access" id="inputGroupSelect01" class="form-control">
+
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <label for="inputGroupSelect01" class="input-group-text">Event Status</label>
+                <select name="event_status" id="inputGroupSelect01" class="form-control">
+
+                    <option value="Pending">Pending</option>
+                    <option value="Accepted">Accepted</option>
+                    <option value="Denied">Denied</option>
+                </select>
+            </div>
+
+            <!-- <div class="mb-3">
             <input type="file" class="form-control" id="inputGroupFile02" name="images[]" accept="image/*" multiple required>
             <label for="inputGroupFile02" class="input-group-text">UPLOAD IMAGE</label>
             <div class="form-text">Choose image files (JPEG, PNG, JPG, GIF).</div>
         </div> -->
 
-        <button type="submit" class="btn btn-primary">Create Event</button>
+            <button type="submit" class="btn btn-primary">Create Event</button>
     </form>
 
 

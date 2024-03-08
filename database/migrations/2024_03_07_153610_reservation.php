@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->foreignId("category_id")->constrained("categories");
-            $table->string('event_status');
-            $table->string('events_access');
+        Schema::create('reservations', function (Blueprint $table) {
+            $table->id();
+            $table->string('event_title');
+            $table->text('description');
+            $table->string('place');
+            $table->integer('available_seats');
+
+            $table->timestamps();
         });
     }
 
