@@ -48,7 +48,12 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-
+        if (Auth::user()->role == 'user') {
+            return redirect()->route('index');
+        }
+        if (Auth::user()->role == 'organizer') {
+            return redirect()->route('dash');
+        }
         return redirect(RouteServiceProvider::HOME);
     }
 }

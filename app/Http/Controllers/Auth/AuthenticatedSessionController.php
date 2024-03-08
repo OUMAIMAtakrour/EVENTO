@@ -29,7 +29,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        if (Auth::user()->role == 'admin') {
+            return redirect()->route('dashboard');
+        } elseif (Auth::user()->role == 'organizer') {
+            return redirect()->route('dash');
+        } elseif (Auth::user()->role == 'user') {
+            return redirect()->route('index');
+        }
+
+
+        return redirect()->intended(config('fortify.index'));
     }
 
     /**
