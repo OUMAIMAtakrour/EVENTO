@@ -2585,8 +2585,30 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
         <nav class="bg-white border-gray-200 py-2.5 dark:bg-gray-900">
 
             <div class="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
+                <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+                    <div class="px-4">
+                        <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
+                        <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    </div>
 
+                    <div class="mt-3 space-y-1">
+                        <x-responsive-nav-link :href="route('profile.edit')">
+                            {{ __('Profile') }}
+                        </x-responsive-nav-link>
+
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                                {{ __('Log Out') }}
+                            </x-responsive-nav-link>
+                        </form>
+                    </div>
+                </div>
                 <div class="flex items-center lg:order-2">
+
                     <div class="hidden mt-2 mr-4 sm:inline-block">
                         <div class="search">
                             <form action="{{ route('searchname') }}" action="get">
@@ -2917,9 +2939,12 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
                             <span>Date: <span class="font-semibold">{{$event->created_at}}</span></span>
                         </li>
                     </ul>
-                    <button type="submit">
-                        <a href="#" class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-purple-900">Reserve</a>
-                    </button>
+                    <form action='/reservation/store' method="post" class="col-10 mx-auto my-4" enctype="multipart/form-data">
+                        @csrf
+                        <button type="submit" class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-purple-900">
+                            RESERVE
+                        </button>
+                    </form>
                 </div>
                 @endforeach
             </div>

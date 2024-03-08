@@ -77,7 +77,7 @@ class EventsController extends Controller
 
         $events = $query->with('categories')->get();
 
-        return view('partials.single', ['events' => $events], 'categories')->render();
+        return view('partials.single', ['events' => $events])->render();
     }
 
     /**
