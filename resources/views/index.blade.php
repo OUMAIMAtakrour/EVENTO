@@ -2588,7 +2588,13 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
 
                 <div class="flex items-center lg:order-2">
                     <div class="hidden mt-2 mr-4 sm:inline-block">
-                        <a class="github-button" href="https://github.com/themesberg/landwind" data-size="large" data-icon="octicon-star" data-show-count="true" aria-label="Star themesberg/landwind on GitHub">Star</a>
+                        <div class="search">
+                            <form action="{{ route('searchname') }}" action="get">
+                                @csrf
+                                <input placeholder="Search..." type="text" name="search">
+                                <button type="submit">Go</button>
+                            </form>
+                        </div>
                     </div>
                     <!-- <a href="#" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Log in</a> -->
 
@@ -2623,18 +2629,12 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
                         <li>
                             <a href="#" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
                         </li>
-                        <div class="search">
-                            <form action="{{ route('searchname') }}" action="get">
-                                @csrf
-                                <input placeholder="Search..." type="text" name="search">
-                                <button type="submit">Go</button>
-                            </form>
-                        </div>
-                        <li>
+
+
 
 
                 </div>
-                </li>
+
                 </ul>
 
 

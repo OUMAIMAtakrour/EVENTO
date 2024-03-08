@@ -19,7 +19,7 @@ class Organizer
         if (!Auth::check()) {
             return redirect()->route('register');
         }
-        if (Auth::user()->role == 'user') {
+        if (Auth::user()->role == 'organizer') {
             return $next($request);
         } else {
             return abort(403);

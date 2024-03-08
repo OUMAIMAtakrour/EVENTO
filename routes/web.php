@@ -5,8 +5,9 @@ use App\Models\CategoryModel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CategoryModelController;
+
+use App\Http\Controllers\OrganizerController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,16 +26,16 @@ Route::get('/', function () {
 Route::get('/index', function () {
     return view('index');
 });
+
 Route::get('/events', function () {
     return view('events');
 });
-Route::get('/dash', function () {
-    return view('dash');
-});
-
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+});
+
+
+
 Route::post('/events/store', [EventsController::class, 'store'])->name('events.store');
 Route::post('/events/{id}/update', [EventsController::class, 'update'])->name('events.update');
 Route::get('/index', [CategoriesController::class, 'index'])->name('index');
@@ -56,5 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::get('/index', [UserController::class, 'index'])->name('index')->middleware('user');
+Route::get('/dash', [OrganizerController::class, 'index'])->name('dash')->middleware('organizer');
 
 require __DIR__ . '/auth.php';

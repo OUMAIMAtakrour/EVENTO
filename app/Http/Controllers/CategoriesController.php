@@ -25,6 +25,7 @@ class CategoriesController extends Controller
     View::share('categories', $categories);
 }
 
+
     /**
      * Show the form for creating a new resource.
      */
