@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class User
+class Admin
 {
     /**
      * Handle an incoming request.
@@ -19,7 +19,7 @@ class User
         if (!Auth::check()) {
             return redirect()->route('register');
         }
-        if (Auth::user()->role == 'client') {
+        if (Auth::user()->role == 'admin') {
             return $next($request);
         } else {
             return abort(403);

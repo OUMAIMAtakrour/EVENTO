@@ -7,6 +7,7 @@ use App\Models\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Console\Scheduling\Event;
 
 class EventsController extends Controller
@@ -18,11 +19,13 @@ class EventsController extends Controller
     public function index()
     {
 
-        $events = Events::all();
+        $events = Event::with('organizers','categories')->where('event_status', 'accepted')->limit(3)->get();
         $categories = Categories::all();
 
         return view('index', compact('events', 'categories'));
     }
+
+
 
     public function showDashboard()
     {
@@ -30,6 +33,27 @@ class EventsController extends Controller
 
         return view('dash', compact('events'));
     }
+    public function show()
+    {
+        $events = Events::all();
+        $categories = Categories::all();
+        return view('events', compact('categories'));
+    }
+    public function accept(Events $event)
+    {
+        $event->update([
+            'event_status' => 'accepted'
+        ]);
+        return redirect()->back()->with('success', 'Event accepted!');
+    }
+    public function Deny(Events $event)
+    {
+        $event->update([
+            'event_status' => 'denied'
+        ]);
+        return redirect()->back()->with('success', 'Event accepted!');
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -43,6 +67,9 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
+        $categories = Categories::all();
+        $events = Events::all();
+
         $validatedData = $request->validate([
             'event_title' => 'required',
             'description' => 'required',
@@ -51,11 +78,15 @@ class EventsController extends Controller
             'category_id' => 'required',
             'event_status' => 'required',
             'events_access' => 'required',
-        ]);
 
+        ]);
+        $organizerId = Auth::id();
+
+
+        $validatedData['organizer_id'] = $organizerId;
         Events::create($validatedData);
 
-        return view('events');
+        return view('dash', compact('categories', 'events'));
     }
     public function filterEvents(Request $request)
     {
@@ -77,16 +108,14 @@ class EventsController extends Controller
 
         $events = $query->with('categories')->get();
 
+
         return view('partials.single', ['events' => $events])->render();
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Events $EventsController)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -107,6 +136,7 @@ class EventsController extends Controller
             'place' => 'required',
             'available_seats' => 'required',
             'category_id' => 'required',
+
         ]);
 
         $event = Events::findOrFail($id);
@@ -116,7 +146,8 @@ class EventsController extends Controller
             'description' => $request->description,
             'place' => $request->place,
             'available_seats' => $request->available_seats,
-            'category_id' => $request->available_seats,
+            'category_id'=>$request->category_id,
+
         ]);
 
         return redirect()->back();

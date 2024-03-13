@@ -7,6 +7,8 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use App\Models\Client;
+use App\Models\Organizer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -29,14 +31,25 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if (Auth::user()->role == 'user') {
-            return redirect()->route('index');
-        } elseif (Auth::user()->role == 'organizer') {
-            return redirect()->route('dash');
+
+        $user = Auth::user();
+        if ($user->role == 'admin') {
+            return redirect('/dashboard');
+        } elseif ($user->role == 'organizer') {
+            if (!$user->organizers->isBanned) {
+                return redirect('dash');
+            } else {
+                Auth::logout();
+                abort('500', 'You Are Banned');
+            }
+        } else {
+            if (!$user->clients->isBanned) {
+                return redirect('/index');
+            } else {
+                Auth::logout();
+                abort('401', 'You Are Banned');
+            }
         }
-
-
-        return redirect()->intended(config('fortify.index'));
     }
 
     /**

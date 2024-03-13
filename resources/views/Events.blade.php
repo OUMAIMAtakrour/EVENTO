@@ -9,8 +9,9 @@
 </head>
 
 <body>
-    <form action='/events/store' method="post" class="col-10 mx-auto my-4" enctype="multipart/form-data">
+    <form action="{{ route('events.store') }}" method="post" class="col-10 mx-auto my-4" enctype="multipart/form-data">
         @csrf
+        <input type="hidden" name="organizerId" value="{{ Auth::user()->organizers->id }}">
         <div class="mb-3">
             <label for="title" class="form-label">TITLE</label>
             <input type="text" name="event_title" class="form-control" placeholder="Enter the title" required>
@@ -30,7 +31,7 @@
         </div>
 
         <div class="input-group mb-3">
-            <label for="inputGroupSelect01" class="input-group-text" >OPTIONS</label>
+            <label for="inputGroupSelect01" class="input-group-text">OPTIONS</label>
             <select name="category_id" id="inputGroupSelect01" class="form-control">
 
 

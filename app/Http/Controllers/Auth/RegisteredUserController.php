@@ -44,16 +44,20 @@ class RegisteredUserController extends Controller
 
             'password' => Hash::make($request->password),
         ]);
+        if ($request->role == 'client') {
+            $user->clients()->create([
+                'user_id' => $user->id
+            ]);
+        } else {
+            $user->organizers()->create([
+                'user_id' => $user->id
+            ]);
+        }
 
         event(new Registered($user));
 
         Auth::login($user);
-        if (Auth::user()->role == 'User') {
-            return redirect()->route('index');
-        }
-        if (Auth::user()->role == 'organizer') {
-            return redirect()->route('dash');
-        }
-        return redirect(RouteServiceProvider::HOME);
+
+        return $request->role == 'client' ? redirect('/index') : redirect('/dash');
     }
 }

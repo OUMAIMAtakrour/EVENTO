@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('place');
             $table->integer('available_seats');
-
+            $table->foreignId("organizer_id")->constrained("users")->onDelete('cascade');
             $table->timestamps();
         });
     }

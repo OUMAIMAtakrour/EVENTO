@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->foreignId("category_id")->constrained("categories");
-            $table->string('event_status');
-            $table->string('events_access');
+            $table->foreignId("category_id")->constrained("categories")->onDelete('cascade');;
+
+            $table->enum('event_status', ['pending', 'accepted', 'denied'])->default('pending');
+            $table->enum('events_access', ['public', 'private']);
         });
     }
 

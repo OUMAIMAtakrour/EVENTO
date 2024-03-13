@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tickets', function (Blueprint $table) {
-            $table->id();
-          
-            $table->timestamps();
+        Schema::table('tickets', function (Blueprint $table) {
+            
+            $table->unsignedBigInteger('reservationID');
+            $table->foreign('reservationID')->references('id')->on('reservations')->onDelete('cascade');
+            
         });
     }
 

@@ -15,6 +15,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="language" content="English">
     <meta name="author" content="Themesberg">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 
     <!-- Social media share -->
     <meta property="og:title" content="Landwind - Tailwind CSS Landing Page">
@@ -2585,27 +2587,36 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
         <nav class="bg-white border-gray-200 py-2.5 dark:bg-gray-900">
 
             <div class="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
-                <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-                    <div class="px-4">
-                        <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                        <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-                    </div>
+                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                <div>{{ Auth::user()->name }}</div>
 
-                    <div class="mt-3 space-y-1">
-                        <x-responsive-nav-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-responsive-nav-link>
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
 
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('profile.edit')">
+                                {{ __('Profile') }}
+                            </x-dropdown-link>
 
-                            <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-responsive-nav-link>
-                        </form>
-                    </div>
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-dropdown>
                 </div>
                 <div class="flex items-center lg:order-2">
 
@@ -2667,43 +2678,29 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
     </header>
 
     <!-- Start block -->
-    <section class="bg-white dark:bg-gray-900">
+    <section class="bg-white dark:bg-gray-900 text-dark">
         <div class="grid max-w-screen-xl px-4 pt-20 pb-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:pt-28">
             <div class="mr-auto place-self-center lg:col-span-7">
-                <h1 class="max-w-2xl mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white">Organizing Events<br>making happy events.</h1>
+                <h1 class="max-w-2xl mb-4 text-4xl font-extrabold text-black leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white">Organizing Events<br>making happy events.</h1>
                 <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</a>.</p>
                 <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
 
-
+                    <img src="/public/img/Screenshot 2024-03-13 023416.png" alt="">
                 </div>
             </div>
-            <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
-                <img src="./images/hero.png" alt="hero image">
+            <div class=" lg:col-span-5 lg:flex">
+                <img src="{{URL::asset('../public/img/Screenshot 2024-03-13 023416.png')}}" alt="">
+
             </div>
         </div>
     </section>
     <!-- End block -->
     <!-- Start block -->
     <section class="bg-white dark:bg-gray-900">
-        @if(isset($eventSearchResults))
-        <div class="mt-4">
-            <h2 class="text-lg font-semibold mb-2">Search Results:</h2>
-            @if($eventSearchResults->isEmpty())
-            <p>No results found.</p>
-            @else
-            <ul>
-                @foreach($eventSearchResults as $event)
-                <li>{{ $event->event_title }}</li>
-                @endforeach
-            </ul>
-            {{ $eventSearchResults->links() }}
-            @endif
-        </div>
-        @endif
         <div class="max-w-screen-xl px-4 pb-8 mx-auto lg:pb-16">
             <div class="grid grid-cols-2 gap-8 text-gray-500 sm:gap-12 sm:grid-cols-3 lg:grid-cols-6 dark:text-gray-400">
                 @foreach ($categories as $category)
-                <a href="{{ route('filterEvents', ['id' => $category->id]) }}" class="flex items-center lg:justify-center" value="{{ $category->id }}">
+                <a href="{{ route('filterEvents', ['id' => $category->id]) }}" class="flex items-center lg:justify-center" value="{{ $category->id }}" class="" style="border-radius: 10px;">
                     {{ $category->name }}
                 </a>
                 @endforeach
@@ -2713,6 +2710,75 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
 
             </div>
         </div>
+
+        @if(isset($eventSearchResults))
+        <div class="mt-4">
+            <h2 class="text-lg font-semibold mb-2">Search Results:</h2>
+            @if($eventSearchResults->isEmpty())
+            <p>No results found.</p>
+            @else
+            <div class="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
+                <!-- Pricing Card -->
+                @foreach ($events as $event)
+
+
+                <div class="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
+                    <h3 class="mb-4 text-2xl font-semibold">{{$event->event_title}}</h3>
+                    <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">Best option for personal use & for your next project.</p>
+                    <div class="flex items-baseline justify-center my-8">
+                        <span class="mr-2 text-5xl font-extrabold"></span>
+
+                    </div>
+                    <!-- List -->
+                    <ul role="list" class="mb-8 space-y-4 text-left">
+
+                        <li class="flex items-center space-x-3">
+                            <!-- Icon -->
+                            <svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>{{$event->description}}</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <!-- Icon -->
+                            <svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Available seats: <span class="font-semibold">{{$event->available_seats}}</span></span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <!-- Icon -->
+                            <svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Localisation: <span class="font-semibold">{{$event->place}}</span></span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <!-- Icon -->
+                            <svg class="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Date: <span class="font-semibold">{{$event->created_at}}</span></span>
+                        </li>
+                    </ul>
+                    <form method="POST" action="{{ route('store', ['event' => $event->id]) }}" class="col-10 mx-auto my-4" enctype="multipart/form-data">
+                        @csrf
+
+                        <input type="hidden" name="client" value="{{ Auth::user()->clients->id }}">
+                        <input type="hidden" name="event" value="{{ $event->id }}">
+
+                        <button type="submit" name="reserve" class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-purple-900">
+                            RESERVE
+                        </button>
+
+                </div>
+                </form>
+                @endforeach
+            </div>
+            {{ $eventSearchResults->links() }}
+            @endif
+        </div>
+        @endif
 
 
 
@@ -2899,13 +2965,15 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
                 @foreach ($events as $event)
 
 
-
                 <div class="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
                     <h3 class="mb-4 text-2xl font-semibold">{{$event->event_title}}</h3>
                     <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">Best option for personal use & for your next project.</p>
                     <div class="flex items-baseline justify-center my-8">
-                        <span class="mr-2 text-5xl font-extrabold">category</span>
-
+                        @if($event->categories)
+                        <span class="mr-2 text-5xl font-extrabold">{{ $event->categories->name }}</span>
+                        @else
+                        <span class="mr-2 text-5xl font-extrabold">No category available</span>
+                        @endif
                     </div>
                     <!-- List -->
                     <ul role="list" class="mb-8 space-y-4 text-left">
@@ -2939,13 +3007,18 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
                             <span>Date: <span class="font-semibold">{{$event->created_at}}</span></span>
                         </li>
                     </ul>
-                    <form action='/reservation/store' method="post" class="col-10 mx-auto my-4" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('store', ['event' => $event->id]) }}" class="col-10 mx-auto my-4" enctype="multipart/form-data">
                         @csrf
-                        <button type="submit" class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-purple-900">
+
+                        <input type="hidden" name="client" value="{{ Auth::user()->clients->id }}">
+                        <input type="hidden" name="event" value="{{ $event->id }}">
+
+                        <button type="submit" name="reserve" class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-purple-900">
                             RESERVE
                         </button>
-                    </form>
+
                 </div>
+                </form>
                 @endforeach
             </div>
         </div>
